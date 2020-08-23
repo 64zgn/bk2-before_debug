@@ -1,12 +1,15 @@
 <% if @book.errors.any? %>
-  <div class="error_explanation">
-    <h2><%= pluralize(@book.errors.count, "error") %> prohibited this product from being saved:</h2>
+<div class="error_explanation">
+    <h2>
+        <%= pluralize(@book.errors.count, "error") %> prohibited this product from being saved:</h2>
     <ul>
-      <% @book.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
+        <% @book.errors.full_messages.each do |message| %>
+        <li>
+            <%= message %>
+        </li>
+        <% end %>
     </ul>
-  </div>
+</div>
 <% end %>
 <div class="row">
     <div class="col-xs-3">
@@ -43,7 +46,50 @@
                         <% end %>
                     </tr>
                 </table>
+                <div class="comment-list bt style-2" id="comments">
+                    <div class="float-wrapper">
+                        <div class="comment-count">
+                            <%= @book.book_comments.count %>件コメント</div>
+                        <ol>
+                            <% @book.book_comments.each do |book_comment| %>
+                            <li class="comment">
+                                <div class="comment-body bb">
+                                    <div class="comment-text">
+                                        <div class="comment-author clearfix">
+                                            <a href="#" class="link-author">
+                                                <%= book_comment.user.name %></a>
+                                            <span class="comment-meta">
+                                                <span class="comment-date">
+                                                    <%= book_comment.created_at.strftime('%Y/%m/%d') %></span>
+                                            </span>
+                                        </div>
+                                        <div class="comment-entry">
+                                            <%= book_comment.comment %>
+                                        </div>
+                                    </div>
+                                </div>
+                                <% if book_comment.user == current_user %>
+                                <%= link_to "削除", book_book_comments_path(book_comment), method: :delete, class: "btn btn-danger" %>
+                                <% end %>
+                            </li>
+                            <% end %>
+                        </ol>
+                        <%= form_for [@book, @book_comment] do |f| %>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <%= f.text_area :comment, rows:'5', class: "form-control",placeholder: "コメントをここに" %>
+                            </div>
+                        </div>
+                        <%= f.submit "送信する", class: "btn btn-lg btn-base-1 mt-20 pull-right" %>
+                        <% end %>
+                        <% if @book_comment.user == current_user %>
+                        <td>
+                            <button type="button" class="btn btn-danger">
+                                <%= link_to "削除", book_book_comment_path(@book, book_comment), method: :delete, remote: true, class: "btn btn-danger" %></button>
+                        </td>
+                        <% end %>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</div>
