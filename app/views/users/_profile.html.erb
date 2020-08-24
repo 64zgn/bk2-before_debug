@@ -14,11 +14,23 @@
             <%= user.introduction %>
         </th>
     </tr>
+    <tr>
+        <th>フォローしている</th>
+        <th>
+            <%= link_to "#{user.followings.count} フォロー", followings_user_path(user) %>
+        </th>
+    </tr>
+    <tr>
+        <th>フォローされている</th>
+        <th>
+            <%= link_to "#{user.followers.count} フォロー", followers_user_path(user) %>
+        </th>
+    </tr>
 </table>
 <div class="row">
     <% if @user == current_user %>
     <%= link_to '', edit_user_path(current_user.id), class: "col-xs-12 btn btn-default glyphicon glyphicon-wrench" %>
- <% else %>
- <%= link_to '', user_path(current_user.id), class: "col-xs-12 btn btn-default glyphicon glyphicon-wrench" %>
-<% end %>
+    <% else %>
+    <%= link_to '', user_path(current_user.id), class: "col-xs-12 btn btn-default glyphicon glyphicon-wrench" %>
+    <% end %>
 </div>
