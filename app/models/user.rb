@@ -20,10 +20,7 @@ class User < ApplicationRecord
   validates :name, presence: true
 
   def follow(other_user)
-    p self.id
-    p other_user.id
     unless self == other_user
-      p '---------'
       self.relationships.find_or_create_by(follow_id: other_user.id)
     end
   end
